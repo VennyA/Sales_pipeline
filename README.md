@@ -167,30 +167,31 @@ Track and nurture new accounts into repeat buyers
 
 ## Visuals Preview
 -**Dashboard Screenshots**-
-<img width="679" height="378" alt="image" src="https://github.com/user-attachments/assets/737c1506-e5ef-410e-84cb-15b6e5d8f1ba" />
 
-<img width="679" height="382" alt="image" src="https://github.com/user-attachments/assets/6c2477fb-795b-4a57-aa5e-0b02ec02211d" />
+<img width="601" height="342" alt="image" src="https://github.com/user-attachments/assets/180bbd37-0a51-481a-9726-5fde2fd917fc" />
+
+<img width="597" height="344" alt="image" src="https://github.com/user-attachments/assets/52457099-964b-47a9-9929-35e575b2c9c5" />
+
+<img width="601" height="340" alt="image" src="https://github.com/user-attachments/assets/d620a07b-75c1-4a4c-b0a8-ffb9e0b68a85" />
+
+<img width="608" height="335" alt="image" src="https://github.com/user-attachments/assets/40a60ee7-1d61-4b27-942e-99abe212f97b" />
 
 -**Before and After Cleaning**-
-<img width="603" height="346" alt="image" src="https://github.com/user-attachments/assets/ea675e45-9524-4519-a105-785f48b22b29" /> 
-<img width="628" height="351" alt="image" src="https://github.com/user-attachments/assets/9b680413-3cd4-48c1-8652-9a097c09cf32" />
+
+<img width="779" height="441" alt="Sales pipeline SQL select from sales_pipeline" src="https://github.com/user-attachments/assets/6371b4b8-7b0c-4106-b1db-de2deda76f17" />
 
 
-<img width="782" height="388" alt="image" src="https://github.com/user-attachments/assets/9e5f21c0-4d5b-4068-8d77-aee90574cc0d" />
- 
-
-<img width="782" height="391" alt="image" src="https://github.com/user-attachments/assets/ef31dfaf-50fe-426d-9cad-86d340342880" />
-
-
+<img width="783" height="416" alt="Screenshot 2026-05-09 161036" src="https://github.com/user-attachments/assets/50ead56d-7e59-47eb-a2e7-8bbeab63bfea" />
 
 
 -**SQL Query**-
 
-<img width="776" height="404" alt="image" src="https://github.com/user-attachments/assets/7722ae5c-197d-4707-912b-472566b6a867" />
+<img width="779" height="430" alt="Screenshot 2026-05-09 160740" src="https://github.com/user-attachments/assets/901e55db-efda-4e4a-ad75-339221624abc" />
 
 
 -**Data Model Diagram**-
-<img width="729" height="310" alt="image" src="https://github.com/user-attachments/assets/6ecb76d4-0ae6-42a8-8c59-56340de42455" />
+<img width="877" height="329" alt="Sales pipeline data modelling" src="https://github.com/user-attachments/assets/bc5e29b2-4f0a-4611-820e-a0b8dd5c752a" />
+
 
 
 
