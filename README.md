@@ -22,16 +22,23 @@ deals. To show insights around deal velocity, stage conversion, rep performance,
 Sales pipeline visibility is essential for revenue growth and operational efficiency. Without a centralized reporting system, sales leadership struggles to identify stalled deals, underperforming regions, low-converting stages, and revenue-driving products.
 
 
-## Data Source
-Source: Maven Analytics — CRM Sales Pipeline 
-Dataset type: Transactional 
-Time period: October 2016 — December 2017
-Raw records: 541,909 rows and 8 columns
-Cleaned records: ~396,470 rows (after removing nulls,cancellations, and invalid entries)
-Unique accounts: 4,334 unique Customers
-Columns: InvoiceNo, StockCode, Description, Quantity, InvoiceDate, UnitPrice, CustomerID, Country
-**Data Limitations:**
--Originally a B2C dataset, adapted here for B2B analysis -25% of records removed due to missing CustomerIDs -Only one year of data, so long-term behaviour is limited
+## 🔷 Data Source
+
+The dataset was sourced from **Maven Analytics** as a free B2B hardware sales dataset. It contains four related tables with a total of 8,800 pipeline deal records spanning October 2016 to December 2017.
+
+| Table | Rows | Columns | Description |
+|-------|------|---------|-------------|
+| sales_pipeline | 8,800 | 8 | Core fact table — deals, stages, dates, values |
+| accounts | 85 | 7 | Company accounts linked to deals |
+| products | 7 | 3 | Hardware products with pricing |
+| sales_team | 35 | 3 | Sales agents, managers, and regions |
+
+**Data Type:** Transactional B2B sales pipeline data
+
+**Limitations:**
+- 1,425 deals (16%) had no linked account and were removed to preserve data integrity
+- No external revenue targets were available — pipeline coverage analysis was excluded
+- October 2016 to February 2017 recorded no Won deals, limiting MoM variance for those months
 
 
 **Why This Project Matters:**  
@@ -40,132 +47,152 @@ Sales pipeline visibility is essential for revenue growth and operational effici
 
 
 
-  ## Problem Statement
+## 🔷 Problem Statement
 
-The sales leadership team at a B2B computer hardware company needs visibility into pipeline performance, rep productivity, and deal conversion across quarters, so they can see revenue accurately and identify where deals are being lost. Currently there is no centralized view of which stages are underperforming, which reps need coaching, and which products are driving wins 
+The sales leadership team at a B2B computer hardware company lacks visibility into pipeline performance, rep productivity, and deal conversion across quarters. Without a centralized view, leadership cannot accurately forecast revenue or identify where deals are being lost.
 
 This analysis was designed to answer the following business questions:
 
-- Which accounts are most valuable to the business?
-- Which accounts are at risk of churning and need urgent attention?
-- What does a healthy account look like versus an at-risk account?
-- How does account retention change over time across different cohorts?
-- Where is revenue concentrated across the account?
-
-## Tools & Methodology
-
-**Tools Used:**
-- **PostgreSQL** — Used for data cleaning, and EDA
-- **Power BI** — data modelling, DAX measures, interactive dashboard
-- **GitHub** — Documentation
- 
-
-**Methodology:**
-
-### 1. Data Collection & Loading
-The sales_opportunities dataset was loaded into PostgreSQL. The initial exploration confirmed 541,909 raw transactions across 
-8 columns spanning from December 2010 to December 2011.
-
-### 2. Data Cleaning & Preparation
-The following steps were applied to ensure data quality:
-- Removed rows with missing CustomerIDs 
-- Removed cancelled orders (InvoiceNo starting with 'C')
-- Filtered out invalid StockCodes (non-numeric entries)
-- Removed transactions with zero or negative Quantity and UnitPrice
-- Parsed InvoiceDate as TIMESTAMP for date calculations
-- Created TotalValue column (Quantity × UnitPrice)
-
-### 3. RFM Analysis
-Each account was scored across three dimensions:
-- **Recency** — days since last purchase (reference date: 2011-12-10)
-- **Frequency** — distinct invoice count per account
-- **Monetary** — total spend per account
-
-Accounts were scored 1–4 using NTILE(4) in PostgreSQL and percentile-based scoring in Power BI. Segments were assigned 
-using CASE/SWITCH logic across 10 categories.
-
-### 4. Churn Flag
-Accounts with Recency greater than 180 days were flagged as 'churned. Overall churn rate was calculated as a 
-percentage of total accounts.
-
-### 5. Cohort Analysis
-Accounts were grouped by their first purchase month. Retention rate was calculated as the percentage of each 
-cohort still active in subsequent months using a cohort index (Month 0 = first purchase month).
-
-### 6. CLV Calculation
-Customer Lifetime Value was calculated as:
-CLV = Average Order Value × Frequency × Customer Lifespan (months). A minimum lifespan of 1 month was applied to avoid zero CLV for single-purchase accounts.
-
-### 7. Data Visualisation
-A 2-page interactive Power BI dashboard was built covering:
-- RFM segmentation and revenue by segment
-- Cohort retention heatmap and account churn status
+- Which sales reps are underperforming?
+- Which pipeline stages have the highest deal drop-off?
+- Which products are driving the most revenue and wins?
+- How long does it take to close a deal on average, and who is slowest?
+- Which regions and managers are leading revenue performance?
 
 
+## 🔷 Tools & Methodology
 
-## Exploratory Data Analysis (EDA)
+**Tools Used**
+
+| Tool | Purpose |
+|------|---------|
+| PostgreSQL | Exploratory data analysis, data cleaning, quality checks |
+| Power BI | Data modeling, DAX measures, interactive dashboard |
+
+**Methodology**
+
+### Data Collection
+The dataset was downloaded from Maven Analytics as four CSV files — accounts, products, sales_team, and sales_pipeline and loaded into both PostgreSQL and Power BI for parallel analysis.
+
+### Data Cleaning & Preparation
+The following steps were performed to ensure data quality:
+- Removed 1,425 deals with no linked account (16% of total records)
+- Corrected inconsistent product name — "GTXPro" standardised to "GTX Pro"
+- Validated opportunity_id as unique primary key — no duplicates found
+- Confirmed deal_stage, regional_office, and sector had no formatting inconsistencies
+
+### Data Modeling
+A star schema was designed in Power BI with sales_pipeline as the fact table linked to three dimension tables:
+- sales_pipeline → accounts (via account)
+- sales_pipeline → products (via product)
+- sales_pipeline → sales_team (via sales_agent)
+
+A DimDate calendar table was created with an active relationship on close_date and an inactive relationship on engage_date.
+
+### Calculated Fields & DAX Measures
+Key measures developed in Power BI include:
+
+| Measure | Description |
+|---------|-------------|
+| Revenue | Total close value for Won deals only |
+| Win Rate | Won deals / (Won + Lost deals) × 100 |
+| AOV | Revenue / Won deals |
+| Avg Deal Velocity | Average days from engage_date to close_date |
+| Deals Exceeding 52 Days | Count of deals exceeding the 52 day benchmark |
+| MoM Variance | Month-on-month change for all key KPIs |
+
+
+## 🔷 Exploratory Data Analysis (EDA)
+
+EDA was conducted in both PostgreSQL and Microsoft Power BI before dashboard development to ensure the analysis was driven by actual data patterns, trends, and business behaviour rather than assumptions.
+
+### Structure Check
+- sales_pipeline confirmed as the fact table with 8,800 rows and 8 columns
+- Three dimension tables: accounts (85 rows), products (7 rows), sales_team (35 rows)
+- Tables joined on text fields: account, product, and sales_agent
+
+### Quality Check
+
+**Null Values (sales_pipeline)**
+
+| Column | Null Count | Action |
+|--------|-----------|--------|
+| account | 1,425 | Removed — could not be linked to account attributes |
+| engage_date | 500 | Retained — open deals expected to have no engage date |
+| close_date | 2,089 | Retained — open deals have no close date |
+| close_value | 2,089 | Retained — open deals have no close value |
+
+
+**Inconsistent Formatting**
+- "GTXPro" in sales_pipeline did not match "GTX Pro" in products table — corrected before analysis
+
+**Duplicates**
+- opportunity_id confirmed unique across all 8,800 rows — no duplicates found
+
+### Distribution Check
+
+| Metric | Value |
+|--------|-------|
+| Close Value (Min) | $0 |
+| Close Value (Max) | $30,288 |
+| Close Value (Avg) | $1,490 |
+| Employees (Median) | 2,769 |
+| Employees (Avg) | 4,660 |
+
+The employee distribution is right-skewed, a small number of large enterprise accounts pull the average above the median.
 
 ### Key Patterns
-Initial analysis revealed significant variation in purchasing behavior across accounts. A small number of high-frequency accounts contributed more to total revenue, while the majority of accounts placed fewer than 5 orders across the entire year. This purchasing inequality was recurring throughout the analysis.
 
-### Distributions
-- **Recency** ranged from 1 to 374 days, indicating a wide spread between recently active and long-dormant accounts
-- **Frequency** was heavily right-skewed most accounts placed between 1–10 orders while a small group placed 40–70+ orders
-- **Monetary** was similarly skewed, top accounts spent upwards of £279,000 while median account spend was significantly lower
-- **CLV** ranged from near zero to £3.3M, driven by high-frequency, high-spend Champion accounts
+| Metric | Finding |
+|--------|---------|
+| Win Rate | 63.15% |
+| Loss Rate | 36.85% |
+| Avg Deal Velocity (Won) | 51.78 days |
+| Top Rep by Revenue | Darcel Schlecht — $1.15M |
+| Deal Stage Distribution | Won: 4,238 — Lost: 2,473 — Engaging: 1,589 — Prospecting: 500 |
 
-### Trends
-- The 2010-12 cohort was the largest (884 accounts) and showed the strongest long-term retention across all cohorts
-- Retention dropped sharply after Month 0 across all cohorts, with most cohorts retaining only 15–25% of accounts by Month 3
-- Revenue was heavily weighted toward Q4 2011, consistent with seasonal wholesale purchasing patterns
+## 🔷 Key Insights
 
-### Outliers
-- CustomerID 14646 recorded the highest monetary value at £279,138 with 72 orders
-- Several accounts had a customer lifespan of 0 months, indicating single-month purchasing activity
-- A small number of accounts had extremely high frequency scores despite low monetary values.
+### 1. Pipeline is healthy but revenue is heavily concentrated
+The pipeline generated $10M in Won revenue at a 63.15% win rate. However, Darcel Schlecht alone accounts for $1.15M more than double the next highest rep at $478,396. This level of concentration creates risk if a single agent leaves or underperforms.
 
-### Correlations
-- Accounts with high Recency scores consistently recorded higher Frequency and Monetary values, confirming that recently active accounts are also the most engaged and highest spending.
-- Churn risk was concentrated in accounts with low Recency and Frequency scores, confirming that declining purchase frequency is an early warning signal for churn.
-- Revenue concentration aligned directly with RFM ranking the top 20% of account generated 72.71% of 
-  total revenue.
+### 2. GTX Pro drives disproportionate revenue
+GTX Pro generated $3.5M — 35% of total pipeline revenue despite being one of seven products.
 
+### 3. Deal velocity varies significantly across reps
+The average deal velocity is 52 days for Won deals. Bottom performing reps range from 56 to 65 days all above the benchmark. Moses Frase recorded the slowest velocity at 65 days. Faster closing reps like Cecily Lampkin at 42 days suggest coaching opportunities exist to compress the sales cycle.
 
-## Key Insights
+### 4. West region leads but all regions are competitive
+The West region leads revenue at $3.6M, followed closely by Central at $3.3M and East at $3.1M. The gap between regions is narrow, suggesting no region is severely underperforming but West has a replicable advantage worth investigating.
 
-### Insight 1 — Revenue is highly concentrated
-A relatively small group of accounts drives most of the revenue. This creates risk — losing even a few top accounts would have an immediate impact.
+### 5. 37% of closed deals are lost — Engaging is the critical stage
+With 2,473 deals lost, the pipeline loses more than one in three closed deals. Deals in the Engaging stage represent 1,589 records still in progress the largest open stage. If conversion at Engaging improves even marginally, win rate and revenue could increase significantly.
 
-### Insight 2 — A large portion of accounts are inactive
-Roughly 20% of accounts haven’t purchased in over 6 months. These accounts are unlikely to return without intervention.
-
-### Insight 3 — Most accounts don’t come back after their first month
-Retention drops sharply after the first purchase. By Month 3, only a small percentage of accounts remain active, pointing to weak onboarding or early engagement.
-
-## Recommendations
-
-### Recommendation 1 — Focus on high-value accounts
-Monitor top accounts closely
-Flag inactivity early (e.g. 30 days without orders)
-Offer incentives or priority support
+### 6. April deal velocity anomaly flagged
+April recorded an unusually low average deal velocity of 6 days across 285 won deals. While shorter sales cycles are typically positive, a 6-day close period is unusually low for B2B hardware sales, which often involve procurement reviews, demos, and approval processes. This suggests a potential data quality issue where engage_date and close_date may have been recorded on the same or near-identical dates. The April velocity data should therefore be reviewed before being used for operational or strategic decision-making.
 
 
- 
+## 🔷 Recommendations
 
-### Recommendation 2 — Run targeted win-back campaigns
-Identify churned and at-risk accounts
-Prioritise by value (CLV)
-Use personalised outreach tied to past purchases
+### 1. Investigate and coach bottom performing reps
+Agents in the bottom 5 by deal velocity range from 56 to 65 days — all above the 52 day benchmark. Sales managers should review their pipeline activity, identify where deals are stalling, and provide targeted coaching to compress the sales cycle. Bringing bottom reps closer to the 42 day velocity of top performers could meaningfully improve overall pipeline throughput.
 
- 
+### 2. Reduce revenue concentration risk
+Darcel Schlecht accounts for $1.15M which is more than double the next highest agent. Leadership should investigate what makes Darcel's approach successful and replicate it across the wider team. Over-reliance on a single rep creates significant revenue risk if that rep leaves or underperforms.
 
-### Recommendation 3 — Improve early engagement
-Follow up after first purchase
-Encourage a second order quickly
-Track and nurture new accounts into repeat buyers
+### 3. Prioritise GTX Pro in sales strategy
+GTX Pro generates $3.5M — 35% of total revenue. Sales leadership should ensure reps are adequately trained on GTX Pro, that it features prominently in outreach, and that deal support resources are allocated to maximise conversion on this product.
+
+### 4. MG Special low revenue
+MG Special is the second highest product by Won deals at 729, yet generates only $43,768 in revenue due to its low unit price.
+
+### 5. Focus coaching on the Engaging stage
+With 1,589 deals currently in the Engaging stage and 37% of closed deals lost, the pipeline has a significant conversion gap. Sales managers should audit deals stuck in Engaging, identify common objections, and develop targeted playbooks to improve conversion at this critical stage.
+
 
 
 ## Visuals Preview
+
 -**Dashboard Screenshots**-
 
 <img width="601" height="342" alt="image" src="https://github.com/user-attachments/assets/180bbd37-0a51-481a-9726-5fde2fd917fc" />
