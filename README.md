@@ -1,11 +1,11 @@
-## 🔷 Executive Summary
+##  Executive Summary
 
 This project analyzes 8,800 B2B hardware sales transactions recorded between October 2016 and December 2017 to help sales leadership gain visibility into pipeline performance, rep productivity, and deal conversion.
 
 The sales leadership team lacked a centralized view of which pipeline stages were underperforming, which reps needed coaching, and which products were driving wins. Using PostgreSQL for exploratory data analysis and Power BI for interactive dashboard development, a four-page dashboard was built to answer the key questions.
 
 
-## 🔷 Project Overview
+##  Project Overview
 
 | Detail | Description |
 |--------|-------------|
@@ -22,7 +22,7 @@ deals. To show insights around deal velocity, stage conversion, rep performance,
 Sales pipeline visibility is essential for revenue growth and operational efficiency. Without a centralized reporting system, sales leadership struggles to identify stalled deals, underperforming regions, low-converting stages, and revenue-driving products.
 
 
-## 🔷 Data Source
+##  Data Source
 
 The dataset was sourced from **Maven Analytics** as a free B2B hardware sales dataset. It contains four related tables with a total of 8,800 pipeline deal records spanning October 2016 to December 2017.
 
@@ -47,7 +47,7 @@ Sales pipeline visibility is essential for revenue growth and operational effici
 
 
 
-## 🔷 Problem Statement
+##  Problem Statement
 
 The sales leadership team at a B2B computer hardware company lacks visibility into pipeline performance, rep productivity, and deal conversion across quarters. Without a centralized view, leadership cannot accurately forecast revenue or identify where deals are being lost.
 
@@ -60,7 +60,7 @@ This analysis was designed to answer the following business questions:
 - Which regions and managers are leading revenue performance?
 
 
-## 🔷 Tools & Methodology
+##  Tools & Methodology
 
 **Tools Used**
 
@@ -102,7 +102,7 @@ Key measures developed in Power BI include:
 | MoM Variance | Month-on-month change for all key KPIs |
 
 
-## 🔷 Exploratory Data Analysis (EDA)
+##  Exploratory Data Analysis (EDA)
 
 EDA was conducted in both PostgreSQL and Microsoft Power BI before dashboard development to ensure the analysis was driven by actual data patterns, trends, and business behaviour rather than assumptions.
 
@@ -151,7 +151,7 @@ The employee distribution is right-skewed, a small number of large enterprise ac
 | Top Rep by Revenue | Darcel Schlecht — $1.15M |
 | Deal Stage Distribution | Won: 4,238 — Lost: 2,473 — Engaging: 1,589 — Prospecting: 500 |
 
-## 🔷 Key Insights
+##  Key Insights
 
 ### 1. Pipeline is healthy but revenue is heavily concentrated
 The pipeline generated $10M in Won revenue at a 63.15% win rate. However, Darcel Schlecht alone accounts for $1.15M more than double the next highest rep at $478,396. This level of concentration creates risk if a single agent leaves or underperforms.
@@ -172,7 +172,7 @@ With 2,473 deals lost, the pipeline loses more than one in three closed deals. D
 April recorded an unusually low average deal velocity of 6 days across 285 won deals. While shorter sales cycles are typically positive, a 6-day close period is unusually low for B2B hardware sales, which often involve procurement reviews, demos, and approval processes. This suggests a potential data quality issue where engage_date and close_date may have been recorded on the same or near-identical dates. The April velocity data should therefore be reviewed before being used for operational or strategic decision-making.
 
 
-## 🔷 Recommendations
+##  Recommendations
 
 ### 1. Investigate and coach bottom performing reps
 Agents in the bottom 5 by deal velocity range from 56 to 65 days — all above the 52 day benchmark. Sales managers should review their pipeline activity, identify where deals are stalling, and provide targeted coaching to compress the sales cycle. Bringing bottom reps closer to the 42 day velocity of top performers could meaningfully improve overall pipeline throughput.
@@ -222,31 +222,35 @@ With 1,589 deals currently in the Engaging stage and 37% of closed deals lost, t
 
 
 
-## Limitations
+##  Limitations
 
-While this analysis provides meaningful insights into account behavior and portfolio health, the following limitations 
-must be acknowledged:
+While this analysis provides meaningful insights into pipeline performance, the following limitations must be acknowledged:
 
-- **B2C dataset reframed as B2B** —
-The original data is consumer retail. Treating CustomerIDs as business accounts works for analysis, but real B2B datasets would include contract values, account tiers, and sales ownership.
+- **Missing account data** — 1,425 deals (16% of total records) had no linked account information and were removed from the analysis. As a result, account-level insights are based on 84% of total pipeline activity and may not fully represent overall revenue performance.
 
-- **No firmographic data beyond country** — No firmographic data (e.g. industry, company size), so segmentation is based only on purchasing behaviour.
+- **No revenue targets available** — The dataset does not include quarterly or annual revenue targets, making pipeline coverage analysis impossible. Recommendations around target attainment are therefore excluded.
 
-- **One year of data only** — Data covers just one year (Dec 2010 – Dec 2011), limiting long-term trend analysis and lifecycle tracking.
+- **October to February anomaly** — No Won deals were recorded from October 2016 till February 2017, which limits MoM variance analysis for those months and may indicate incomplete data for that period.
+
+- **April velocity anomaly** — April 2017 recorded an average deal velocity of 6 days across 285 Won deals, which is unrealistically low for B2B hardware sales. This is flagged as a likely data quality issue and excluded from 
+velocity-based coaching recommendations.
+
+- **Static dataset** — The dataset covers a fixed period from October 2016 to December 2017 and does not reflect current market conditions or ongoing pipeline activity. Findings should be treated as historical analysis rather 
+than live performance monitoring.
+
+- **No external factors** — Variables such as competitor activity, economic conditions, or marketing campaigns are not captured in the dataset and may have influenced pipeline performance during the analysis period.
 
 
-- **Churn threshold is assumed** — The 180-day threshold is a standard benchmark. In practice, churn would depend on the company’s actual sales cycle.
 
-- **Missing CustomerIDs** — A significant portion of transactions were excluded due to missing IDs, which may slightly skew customer counts and revenue distribution.
+##  Conclusion
 
+This analysis provides a structured evaluation of sales pipeline performance, rep productivity, deal velocity, and revenue concentration for a B2B computer hardware company covering October 2016 to December 2017.
 
+The pipeline is fundamentally healthy — a 63.15% win rate and $10M in Won revenue demonstrate that the sales team is converting effectively. However, the analysis reveals three critical areas requiring leadership attention:
 
-## Conclusion
+- **Revenue concentration risk** — Darcel Schlecht accounts for $1.15M, more than double any other rep, creating over-reliance on a single performer.
 
-This project evaluates account health, purchasing behaviour, and revenue concentration across 4,334 customers using transactional data.
+- **Product revenue imbalance** — GTX Pro drives 35% of total revenue while MG Special generates only $43,768 despite being the second highest product by deal volume, signalling a pricing strategy gap.
 
-Applying RFM segmentation, churn analysis, cohort tracking, and CLV highlights three core patterns:
+- **Deal velocity gap** — Bottom performing reps take up to 65 days to close deals against a 52 day benchmark, representing a coaching and process improvement opportunity.
 
-Revenue is highly concentrated in a small group of customers → retention here is critical
-Around 1 in 5 customers are already inactive → clear recovery opportunity
-Most customers don’t return after their firs
