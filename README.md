@@ -194,14 +194,21 @@ With 1,589 deals currently in the Engaging stage and 37% of closed deals lost, t
 ## Visuals Preview
 
 -**Dashboard Screenshots**-
+<img width="608" height="341" alt="image" src="https://github.com/user-attachments/assets/ed29637f-4cd0-4354-9e7a-6c54549fd0a7" />
 
-<img width="601" height="342" alt="image" src="https://github.com/user-attachments/assets/180bbd37-0a51-481a-9726-5fde2fd917fc" />
+<img width="614" height="342" alt="image" src="https://github.com/user-attachments/assets/be5f0a45-2787-4ecb-8dba-b5128245e6ba" />
 
-<img width="597" height="344" alt="image" src="https://github.com/user-attachments/assets/52457099-964b-47a9-9929-35e575b2c9c5" />
+<img width="604" height="340" alt="image" src="https://github.com/user-attachments/assets/26895e94-ee56-438d-8b5f-08a789bf8e14" />
 
-<img width="601" height="340" alt="image" src="https://github.com/user-attachments/assets/d620a07b-75c1-4a4c-b0a8-ffb9e0b68a85" />
+<img width="602" height="338" alt="image" src="https://github.com/user-attachments/assets/66047701-6de1-4679-9e85-0ddcc938d6c7" />
 
-<img width="608" height="335" alt="image" src="https://github.com/user-attachments/assets/40a60ee7-1d61-4b27-942e-99abe212f97b" />
+<img width="608" height="335" alt="image" src="https://github.com/user-attachments/assets/cade0bf5-df61-4c93-883e-435978769ba1" />
+
+<img width="617" height="343" alt="image" src="https://github.com/user-attachments/assets/f2d7389c-1264-463e-8d2c-db52aa9dc690" />
+
+
+
+
 
 -**Before and After Cleaning**-
 
