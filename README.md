@@ -194,6 +194,8 @@ With 1,589 deals currently in the Engaging stage and 37% of closed deals lost, t
 ## Visuals Preview
 
 -**Dashboard Screenshots**-
+
+
 <img width="608" height="341" alt="image" src="https://github.com/user-attachments/assets/ed29637f-4cd0-4354-9e7a-6c54549fd0a7" />
 
 <img width="614" height="342" alt="image" src="https://github.com/user-attachments/assets/be5f0a45-2787-4ecb-8dba-b5128245e6ba" />
